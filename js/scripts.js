@@ -1,57 +1,168 @@
-// querySelector - Selecciona un elemento por su id
+// Seleccionar elementos...
 
-const heading = document.querySelector('.header__texto h2'); // retorna 0 o 1 elemento
-heading.textContent='Nuevo Heading';
-console.log(heading);
+// querySelector
 
-// querySelectorAll devuelve una colección de elementos que coinciden con el selector
+const textoHeading = document.querySelector('.header__texto h2');
+console.log(textoHeading);
+
+textoHeading.textContent = 'Nuevo Heading'; // También se puede utilizar .text
+
+// querySelectorAll
 const enlaces = document.querySelectorAll('.navegacion a');
-// console.log(enlaces);
-console.log(enlaces[0]);
-enlaces[0].textContent='Nuevo Enlace';
-//enlaces[0].href='https://www.google.com';
+console.log(enlaces);
+
+// Algunas operaciones...
+
+// Cambiar el texto
+enlaces[0].textContent = 'Nuevo Texto enlace';
+
+// Cambiar el enlace del primer enlace
+enlaces[0].href = 'google.com';
+
+// Agregar una clase...
 enlaces[0].classList.add('nueva-clase');
+
+// Eliminar una clase...
 // enlaces[0].classList.remove('navegacion__enlace');
 
-/*
-// getElementById - Selecciona un elemento por su id
-const heading2 = document.getElementById('heading');
-console.log(heading2);*/
 
-// Generar un nuevo enlace 
+// Generar HTML desde JavaScript...
 const nuevoEnlace = document.createElement('A');
 
-// Agregar un href
-nuevoEnlace.href= 'nuevo-enlace.html';
+console.log(nuevoEnlace);
 
-// Agregar el texto
-nuevoEnlace.textContent = 'Tienda Virtual';
-
-// Agregar la clase
+// Un enlace tiene una clase...
 nuevoEnlace.classList.add('navegacion__enlace');
 
-//Agregar al documento 
+// Tiene un href
+nuevoEnlace.href = 'nuevo-enlace.html';
+
+// Tiene un Texto...
+nuevoEnlace.textContent = 'Un Nuevo Enlace';
+
+// console.log(nuevoEnlace);
+
+// Finalmente se agrega donde lo deseamos colocar...
+
+// Tienes que seleccionar el elemento padre
+
 const navegacion = document.querySelector('.navegacion');
 navegacion.appendChild(nuevoEnlace);
 
-// Eventos 
 
-console.log(1);
 
-window.addEventListener('load', function(){ // load espera a que el Js y los archicvos que dependen de HTML esten Listos
-    console.log(2);
+
+
+
+// Eventos en JavaScript...
+
+// Hay muchos eventos ocurriendo en tus sitios y aplicaciones web, cuando un usuario da click, cuando dan scroll, al presionar en un botón, enviar un formulario, pero uno de los más comunes es esperar a que el documento este listo...
+
+
+
+console.log('1');
+window.addEventListener('load', function() { // Cuando el Archivo JS y los archivos dependientes han cargado como es el HTML y las imagenes...
+    console.log('2');
 });
 
-window.onload = function(){ // onload espera a que el Js y los archicvos que dependen de HTML esten Listos  
-    console.log(3);
-}
+window.onload = function() {
+    console.log('3')
+};
 
-document.addEventListener('DOMContentLoaded', function(){ // DOMContentLoaded espera a que el Js y los archicvos que dependen de HTML esten Listos
-    console.log(4);
+document.addEventListener('DOMContentLoaded', function() { // Este se ejecuta cuando el HTML ha sido descargado pero no espera por CSS o imagenes...
+    console.log('4');
 });
 
-console.log(5);
+console.log('5');
 
-window.onscroll = function(){ // onscroll espera a que el Js y los archicvos que dependen de HTML esten Listos
-    console.log('scrolling');
+// Estos closures también pueden ser con una función aparte...
+
+
+
+// // Eventos Scroll...
+// window.onscroll = function(e) {
+//     console.log('scrolling...');
+
+//     console.log(this.scrollY);
+// }
+
+
+
+// Eventos con Click y submit...
+
+// const btnEnviar = document.querySelector('.formulario input[type=submit]');
+// console.log(btnEnviar);
+
+// btnEnviar.addEventListener('click', function() { // callback o closure 
+//     console.log('click');
+// });
+
+const datos = {
+    nombre: '',
+    email: '',
+    mensaje: ''
 }
+
+// submit se utiliza en formulario
+const formulario = document.querySelector('.formulario');
+
+formulario.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    console.log(e);
+
+    console.log('Di click y la página ya no recarga');
+
+    console.log(datos);
+
+    // Validar el Formulario...
+
+    const { nombre, email, mensaje } = datos;
+
+    if(nombre === '' || email === '' || mensaje === '' ) {
+        console.log('Al menos un campo esta vacio');
+        mostrarAlerta('Todos los campos son obligatorios');
+        return; // Detiene la ejecución de esta función
+    }
+
+    console.log('Todo bien...')
+
+    mostrarAlerta('Mensaje enviado correctamente');
+});
+
+function mostrarAlerta(mensaje,error = null){
+    const alerta = document.createElement('P');
+    alerta.textContent = mensaje;
+    if(error){
+        alerta.classList.add('error');
+    } else{
+        alerta.classList.add('correcto');
+    }
+
+    formulario.appendChild(alerta);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+
+// Eventos de los Inputs...
+const nombre = document.querySelector('#nombre');
+const email = document.querySelector('#email');
+const mensaje = document.querySelector('#mensaje');
+
+
+nombre.addEventListener('input', leerTexto);
+email.addEventListener('input', leerTexto);
+mensaje.addEventListener('input', leerTexto);
+
+function leerTexto(e) {
+    // console.log(e);
+    // console.log(e.target.value);
+
+    datos[e.target.id] = e.target.value;
+
+    console.log(datos);
+}
+
